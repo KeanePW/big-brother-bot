@@ -43,13 +43,15 @@
 #   * kick commands now sends reason
 # 30.12.2011 - 1.2 - Bravo17
 #   * New client will now join Auth queue if slot shows as 'Disconnected' in Auth queue
+# 14.07.2012 - 1.21 - Bravo17
+#   * Changes to Pre Match logic
 #
 
 ## @file
 #  CoD7 Parser
 
 __author__  = 'Freelander, Courgette, Just a baka, Bravo17'
-__version__ = '1.2'
+__version__ = '1.21'
 
 import re
 import string
