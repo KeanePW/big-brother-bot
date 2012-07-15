@@ -189,7 +189,7 @@ class Cod7Parser(b3.parsers.cod5.Cod5Parser):
 
         # Round switch (InitGame after ShutdownGame, but there was no ExitLevel):
         if self._preMatch and not self._elFound and self._igBlockFound and self._sgFound and self._logTimerOld <= self._logTimer:
-            self.preMatch = False
+            self._preMatch = False
             self.debug('PRE-MATCH OFF: found a round change.')
             self._igBlockFound = False
             self._sgFound = False
@@ -211,7 +211,7 @@ class Cod7Parser(b3.parsers.cod5.Cod5Parser):
             self.write('setadmindvar g_logTimeStampInSeconds 0')
 
         # Initgame after ExitLevel
-        else:
+        elif _igBlockFound:
             self._elFound = False
             self._sgFound = False
 
