@@ -213,7 +213,7 @@ class Cod7Parser(b3.parsers.cod5.Cod5Parser):
             self.write('setadmindvar g_logTimeStampInSeconds 0')
 
         # Initgame after ExitLevel
-        elif _igBlockFound:
+        elif self._igBlockFound:
             self._elFound = False
             self._sgFound = False
 
