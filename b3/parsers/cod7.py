@@ -84,6 +84,7 @@ class Cod7Parser(b3.parsers.cod5.Cod5Parser):
     _commands['ban'] = 'banclient %(cid)s'
     _commands['unban'] = 'unbanuser "%(name)s"'
     _commands['tempban'] = 'clientkick %(cid)s "%(reason)s"'
+    _commands['kickbyfullname'] = 'kick %(cid)s'
 
     """\
     Next actions need translation to the EVT_CLIENT_ACTION (Treyarch has a different approach on actions)

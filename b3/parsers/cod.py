@@ -57,9 +57,10 @@
 # 07/07/2012 - 1.4.28 - Courgette - ensures the config file has option 'game_log' in section 'server'
 # 12/31/2012 - 1.4.29 - Courgette - accepts rcon status responses having negative port numbers
 # 01/02/2013 - 1.4.30 - Courgette - improve parsing rcon status status responses that are missing characters
+# 07/03/2013 - 1.4.31 - 82ndab-Bravo17 - Add command template kickbyfullname, used by q3a parser 1.7.4
 
 __author__ = 'ThorN, xlr8or'
-__version__ = '1.4.29'
+__version__ = '1.4.31'
 
 import re, string, threading
 import b3
@@ -87,6 +88,7 @@ class CodParser(AbstractParser):
     _commands['ban'] = 'banclient %(cid)s'
     _commands['unban'] = 'unbanuser %(name)s' # remove players from game engine's ban.txt
     _commands['tempban'] = 'clientkick %(cid)s'
+    _commands['kickbyfullname'] = 'kick %(cid)s'
 
     _eventMap = {
         'warmup': b3.events.EVT_GAME_WARMUP,
