@@ -93,6 +93,7 @@ from b3.parsers.punkbuster import PunkBuster
 import b3.parsers.q3a.rcon as rcon
 import b3.parser
 import b3.cvar
+import new
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 class AbstractParser(b3.parser.Parser):
@@ -472,7 +473,7 @@ class AbstractParser(b3.parser.Parser):
             self.writelines(lines)
 
     def kick(self, client, reason='', admin=None, silent=False, *kwargs):
-        if isinstance(client, str) or isinstance(client, unicode) and re.match('^[0-9]+$', client):
+        if isinstance(client, basestring) and re.match('^[0-9]+$', client):
             self.write(self.getCommand('kick', cid=client, reason=reason))
             return
 
@@ -768,49 +769,55 @@ class AbstractParser(b3.parser.Parser):
 
                 
 ###################################################################
-# ALTER THE WAY admin.py work for q3a based games
+# ALTER THE WAY admin.py work for some q3a based games
 ###################################################################
 
-from b3.plugins.admin import AdminPlugin
+    def patch_b3_admin_plugin(self):
+        """
+        Monkey patches the admin plugin
+        """
 
-# backup original cmd_kick
-originalcmd_kick = AdminPlugin.cmd_kick
 
-def newcmd_kick(self, data, client=None, cmd=None):
-    """\
-    <name> [<reason>] - kick a player
-    """
-    m = self.parseUserCmd(data)
-    if not m:
-        client.message('^7Invalid parameters')
-        return False
+        def new_cmd_kick(self, data, client=None, cmd=None):
+            """\
+            <name> [<reason>] - kick a player
+            <fullexactname> [<reason>] - kick an incompletely authed player
+            """
+            m = self.parseUserCmd(data)
+            if not m:
+                client.message('^7Invalid parameters')
+                return False
 
-    cid, keyword = m
-    reason = self.getReason(keyword)
+            cid, keyword = m
+            reason = self.getReason(keyword)
 
-    if not reason and client.maxLevel < self._noreason_level:
-        client.message('^1ERROR: ^7You must supply a reason')
-        return False
+            if not reason and client.maxLevel < self._noreason_level:
+                client.message('^1ERROR: ^7You must supply a reason')
+                return False
 
-    sclient = self.findClientPrompt(cid, client)
-    if sclient:
-        if sclient.cid == client.cid:
-            self.console.say(self.getMessage('kick_self', client.exactName))
-            return True
-        elif sclient.maxLevel >= client.maxLevel:
-            if sclient.maskGroup:
-                client.message('^7%s ^7is a masked higher level player, can\'t kick' % sclient.exactName)
+            sclient = self.findClientPrompt(cid, client)
+            if sclient:
+                if sclient.cid == client.cid:
+                    self.console.say(self.getMessage('kick_self', client.exactName))
+                    return True
+                elif sclient.maxLevel >= client.maxLevel:
+                    if sclient.maskGroup:
+                        client.message('^7%s ^7is a masked higher level player, can\'t kick' % sclient.exactName)
+                    else:
+                        self.console.say(self.getMessage('kick_denied', sclient.exactName, client.exactName, sclient.exactName))
+                    return True
+                else:
+                    sclient.kick(reason, keyword, client)
+                    return True
+            elif re.match('^[0-9]+$', cid):
+                # failsafe, do a manual client id kick
+                self.console.kick(cid, reason, client)
             else:
-                self.console.say(self.getMessage('kick_denied', sclient.exactName, client.exactName, sclient.exactName))
-            return True
-        else:
-            sclient.kick(reason, keyword, client)
-            return True
-    elif re.match('^[0-9]+$', cid):
-        # failsafe, do a manual client id kick
-        self.console.kick(cid, reason, client)
-    else:
-        self.console.kickbyfullname(cid, reason, client)
+                self.console.kickbyfullname(cid, reason, client)
 
-# make newLoadArbPlugins the default
-AdminPlugin.cmd_kick = newcmd_kick
+        adminPlugin = self.getPlugin('admin')
+
+        cmd = adminPlugin._commands['kick']
+        cmd.func = new.instancemethod(new_cmd_kick, adminPlugin)
+        cmd.help = new_cmd_kick.__doc__.strip()
+

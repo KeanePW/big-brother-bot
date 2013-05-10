@@ -62,6 +62,9 @@ class Cod6Parser(b3.parsers.cod4.Cod4Parser):
             self.game.sv_hostname = None
             self.warning('Could not query server for sv_hostname')
 
+    def pluginsStarted(self):
+        self.debug('Admin Plugin not patched.')
+        
     # action
     def OnA(self, action, data, match=None):
         #bugged: cid and guid both 0

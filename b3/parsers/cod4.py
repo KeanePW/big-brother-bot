@@ -59,6 +59,17 @@ class Cod4Parser(b3.parsers.cod2.Cod2Parser):
     gameName = 'cod4'
     IpsOnly = False
     _guidLength = 32
+    
+    _commands = {}
+    _commands['message'] = 'tell %(cid)s %(prefix)s ^3[pm]^7 %(message)s'
+    _commands['deadsay'] = 'tell %(cid)s %(prefix)s [DEAD]^7 %(message)s'
+    _commands['say'] = 'say %(prefix)s %(message)s'
+    _commands['set'] = 'set %(name)s "%(value)s"'
+    _commands['kick'] = 'clientkick %(cid)s'
+    _commands['ban'] = 'banclient %(cid)s'
+    _commands['unban'] = 'unbanuser %(name)s' # remove players from game engine's ban.txt
+    _commands['tempban'] = 'clientkick %(cid)s'
+    _commands['kickbyfullname'] = 'kick %(cid)s'
 
     #num score ping guid                             name            lastmsg address               qport rate
     #--- ----- ---- -------------------------------- --------------- ------- --------------------- ----- -----
@@ -93,6 +104,9 @@ class Cod4Parser(b3.parsers.cod2.Cod2Parser):
 $
 """, re.IGNORECASE | re.VERBOSE)
 
+    def pluginsStarted(self):
+        self.patch_b3_admin_plugin()
+        self.debug('Admin Plugin has been patched.')
 
     # join team (Some mods eg OW use JT)
     def OnJt(self, action, data, match=None):

@@ -88,7 +88,6 @@ class CodParser(AbstractParser):
     _commands['ban'] = 'banclient %(cid)s'
     _commands['unban'] = 'unbanuser %(name)s' # remove players from game engine's ban.txt
     _commands['tempban'] = 'clientkick %(cid)s'
-    _commands['kickbyfullname'] = 'kick %(cid)s'
 
     _eventMap = {
         'warmup': b3.events.EVT_GAME_WARMUP,
