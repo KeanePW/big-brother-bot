@@ -35,7 +35,7 @@
 #    * messages now support named $variables instead of %s
 # 8/11/2010 - 1.3.4 - GrosBedo
 #    * messages can now be empty (no message broadcasted on kick/tempban/ban/unban)
-# 22/1/2012 - 1.3.5 -92ndab-Bravo17
+# 22/1/2012 - 1.3.5 -82ndab-Bravo17
 #    * Add JT method for some COD4 mods
 # 7/3/2012 - 1.3.6 - 82ndab-Bravo17
 #    * Change Client Auth method so it updates empty pbids
@@ -45,10 +45,12 @@
 #    * improve parsing rcon status status responses that are missing characters
 # 2013/01/12 - 1.3.9 - Courgette
 #    * fix bug when cod4ClientAuthMethod handles an unexpected error
+# 2013/05/10 - 1.4.0 - 82ndab.Bravo17
+#    * Allow kicking by full name, even if not authed by B3
 #
 
 __author__  = 'ThorN, xlr8or'
-__version__ = '1.3.9'
+__version__ = '1.4.0'
 
 import b3.parsers.cod2
 import b3.functions

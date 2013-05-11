@@ -17,6 +17,8 @@
 #
 # CHANGELOG
 #
+# 10/05/2013 - v0.61- 82ndab.Bravo17
+#  * Do not apply cod4 alterations to admin plugin
 # 25/04/2011 - v0.6 - xlr8or
 #  * action logging - get client by name.
 # 24/04/2011 - v0.5 - xlr8or
@@ -32,7 +34,7 @@
 
 
 __author__  = 'NTAuthority'
-__version__ = '0.6'
+__version__ = '0.61'
 
 import b3.parsers.cod4
 import re

@@ -40,9 +40,11 @@
 #  fix bug in onJT() and translateAction()
 # 9/7/2011 - 1.3.2 - 82ndab.Bravo17
 #  Add fuzzy guid search in sync() from COD4 series
+# 10/03/2013 - 1.3.3 - 82ndab.Bravo17
+#  Allow kicking by full name, even if not authed by B3
 
 __author__  = 'xlr8or'
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 
 import b3.parsers.cod2
 import b3.functions
